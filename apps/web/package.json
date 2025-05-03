@@ -25,7 +25,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "database": "*",
-    "expo-passkey": "^0.1.0-rc.1",
+    "expo-passkey": "^0.1.0-rc.2",
     "google-polyauth": "*",
     "lucide-react": "^0.485.0",
     "next": "15.2.4",

@@ -51,7 +51,7 @@
     "expo-linking": "~7.1.4",
     "expo-local-authentication": "~16.0.4",
     "expo-navigation-bar": "~4.2.4",
-    "expo-passkey": "^0.1.0-rc.1",
+    "expo-passkey": "^0.1.0-rc.2",
     "expo-router": "~5.0.4",
     "expo-secure-store": "~14.2.3",
     "expo-splash-screen": "~0.30.8",
