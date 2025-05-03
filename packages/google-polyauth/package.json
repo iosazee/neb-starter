@@ -1,0 +1,44 @@
+{
+  "name": "google-polyauth",
+  "version": "0.1.0",
+  "description": "Better Auth plugin for Google authentication with multiple client IDs support",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/cjs/index.js"
+    },
+    "./client": {
+      "types": "./dist/client.d.ts",
+      "import": "./dist/client.js",
+      "require": "./dist/cjs/client.js"
+    },
+    "./server": {
+      "types": "./dist/server.d.ts",
+      "import": "./dist/server.js",
+      "require": "./dist/cjs/server.js"
+    }
+  },
+  "scripts": {
+    "build": "yarn build:esm && yarn build:cjs",
+    "build:esm": "tsc --outDir dist",
+    "build:cjs": "tsc --outDir dist/cjs --module CommonJS --moduleResolution Node",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "peerDependencies": {
+    "better-auth": ">=1.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "better-auth": "^1.2.6-beta.3"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "name": "neb-starter",
+  "version": "1.0.0",
+  "description": "A production-ready universal app monorepo starter kit featuring a Next.js web app, Expo mobile app, pre-configured authentication with better-auth, and database integration with Prisma ORM - everything you need to start building cross-platform applications instantly.",
+  "private": "true",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "yarn workspaces run dev",
+    "build": "yarn workspaces run build",
+    "start": "yarn workspaces run start",
+    "clean": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' + && rm -f yarn.lock",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\" --ignore-path .gitignore",
+    "type-check": "yarn workspaces run type-check",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "postinstall": "yarn workspace database prisma generate",
+    "android": "expo run:android",
+    "ios": "expo run:ios"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9",
+    "dotenv-cli": "^8",
+    "eslint": "^9",
+    "eslint-plugin-react": "^7",
+    "globals": "^16",
+    "prettier": "^3",
+    "typescript": "^5",
+    "typescript-eslint": "^8"
+  },
+  "resolutions": {
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-native": "0.79.2",
+    "@types/react": "~19.0.10",
+    "globals": "16.0.0"
+  },
+  "packageManager": "yarn@1.22.22",
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "expo-asset": "^11.0.5"
+  }
+}

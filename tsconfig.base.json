@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+      "resolveJsonModule": true,
+      "isolatedModules": true,
+      "allowJs": true,
+      "noEmit": true,
+      "incremental": true
+    },
+    "exclude": ["node_modules", "**/node_modules", "dist", "**/dist"]
+  }
