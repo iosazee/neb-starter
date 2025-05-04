@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
+import Link from "next/link";
 import { BarChart, Calendar, CreditCard, Users, Menu } from "lucide-react";
 import {
   DropdownMenu,
@@ -14,7 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { LogOutButton } from "@/components/auth/logout-button";
 import { SessionUser } from "@/@types";
 
@@ -41,9 +42,9 @@ export function DashboardShell({ user }: DashboardShellProps) {
     <div className="flex h-screen bg-slate-50 dark:bg-slate-900">
       {/* Sidebar for desktop */}
       <aside className="hidden md:flex w-64 flex-col bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700">
-        <div className="p-6">
-          <h2 className="text-2xl font-bold">NEB Starter</h2>
-        </div>
+        <Link href={"/"} className="p-6 flex items-center justify-center">
+          <Image src="/logo.png" alt="NEB Starter Kit" width={80} height={30} className="h-auto" />
+        </Link>
         <nav className="flex-1 px-4 space-y-1">
           <Button variant="ghost" className="w-full justify-start gap-2 mb-1" asChild>
             <a href="/dashboard" className="font-medium">
@@ -93,10 +94,17 @@ export function DashboardShell({ user }: DashboardShellProps) {
 
       {/* Mobile sidebar */}
       <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+        <SheetTitle></SheetTitle>
         <SheetContent side="left" className="w-64 sm:max-w-none">
-          <div className="p-4">
-            <h2 className="text-2xl font-bold">NEB Starter</h2>
-          </div>
+          <Link href={"/"} className="px-8 py-4 flex items-center justify-start">
+            <Image
+              src="/logo.png"
+              alt="NEB Starter Kit"
+              width={60}
+              height={20}
+              className="h-auto"
+            />
+          </Link>
           <nav className="flex-1 px-2 space-y-1">
             <Button
               variant="ghost"
@@ -169,6 +177,7 @@ export function DashboardShell({ user }: DashboardShellProps) {
         <header className="h-16 flex items-center bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-4">
           <div className="flex items-center gap-2 md:hidden">
             <Sheet>
+              <SheetTitle></SheetTitle>
               <SheetTrigger asChild>
                 <Button variant="outline" size="icon" onClick={() => setIsMobileMenuOpen(true)}>
                   <Menu className="h-5 w-5" />

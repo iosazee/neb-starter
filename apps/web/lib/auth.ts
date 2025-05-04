@@ -140,8 +140,7 @@ const options = {
       rpId: domain,
       rpName: "neb-starter",
       logger: {
-        enabled: true,
-        level: "debug",
+        enabled: false,
       },
       cleanup: {
         disableInterval: true,

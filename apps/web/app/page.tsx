@@ -1,9 +1,10 @@
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Github, Database, Lock, Smartphone, Globe, Code2 } from "lucide-react";
+import { Database, Lock, Smartphone, Globe, Code2 } from "lucide-react";
 import { ModeToggle } from "@/components/general/mood-toggle";
+import AuthButton from "@/components/ui/auth-button";
+import { SocialIcon } from "@/components/social-icons";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -49,20 +50,26 @@ export default function Home() {
           </Badge>
         </div>
         <div className="flex flex-wrap gap-4 justify-center">
-          <Button asChild>
-            <Link href="/login">Get Started</Link>
-          </Button>
-          <Button variant="outline" asChild>
-            <Link
-              href="https://github.com/iosazee/neb-starter"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2"
-            >
-              <Github className="w-4 h-4" />
-              GitHub
-            </Link>
-          </Button>
+          <AuthButton
+            loginText="Get Started"
+            authenticatedText="Dashboard"
+            loginHref="/login"
+            authenticatedHref="/dashboard"
+          />
+          <Link
+            href="https://github.com/iosazee/neb-starter"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 h-10 px-4 py-2 rounded-md text-sm font-medium transition-colors border border-input bg-background hover:bg-accent hover:text-accent-foreground"
+          >
+            <SocialIcon
+              platform="github"
+              size={4}
+              className="text-foreground"
+              linkWrapper={false}
+            />
+            GitHub
+          </Link>
         </div>
       </div>
 
@@ -257,9 +264,13 @@ yarn run:android  # For Android devices`}
           Start building your next project with the NEB Starter Kit and focus on what matters most -
           your application&apos;s unique features.
         </p>
-        <Button size="lg" asChild>
-          <Link href="/login">Get Started Now</Link>
-        </Button>
+        <AuthButton
+          loginText="Get Started Now"
+          authenticatedText="Go to Dashboard"
+          loginHref="/login"
+          authenticatedHref="/(members)/dashboard"
+          size="lg"
+        />
       </div>
     </div>
   );
