@@ -128,12 +128,11 @@ export const PasskeyRegistration = ({
         email: userEmail,
       };
 
-      // Call registerPasskey with WebAuthn parameters - now using user-friendly identifiers
       const result = await registerPasskey({
-        userId, // Keep the same userId for internal reference
-        userName: webAuthnUserName, // Use email as the username
-        displayName: displayName, // Use the full name or email for display
-        rpId: "neb-starter.vercel.app",
+        userId,
+        userName: webAuthnUserName,
+        displayName: displayName,
+        rpId: "neb-starter-web.vercel.app",
         rpName: "NEB Starter",
         metadata,
       });

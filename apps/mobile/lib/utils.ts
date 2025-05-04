@@ -1,6 +1,6 @@
 import { $fetch } from "~/lib/auth-client";
 
-const API_BASE = "https://neb-starter.vercel.app/api/mobile";
+const API_BASE = process.env.EXPO_PUBLIC_API_BASE_URL;
 
 // Global flag for preventing automatic redirects
 export const PREVENT_REDIRECT_KEY = "preventProfileRedirect";

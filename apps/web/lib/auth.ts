@@ -13,7 +13,7 @@ import hybridCacheStorage from "./cache-adapter";
 import { mapAppleProfileToUser } from "./utils";
 
 const isDevEnvironment = process.env.NODE_ENV === "development";
-const domain = isDevEnvironment ? "localhost" : "neb-starter.vercel.app";
+const domain = isDevEnvironment ? "localhost" : "neb-starter-web.vercel.app";
 
 const options = {
   appName: "neb-starter",
@@ -23,8 +23,7 @@ const options = {
   baseURL: env.NEXT_PUBLIC_APP_URL,
   secret: env.BETTER_AUTH_SECRET,
   trustedOrigins: [
-    "https://neb-starter.vercel.app",
-    "https://www.neb-starter.vercel.app/api/auth",
+    env.NEXT_PUBLIC_APP_URL,
     "mobile://",
     "exp+neb-mobile://",
     "exp+mobile://expo-development-client",
@@ -146,7 +145,7 @@ const options = {
         disableInterval: true,
       },
       origin: [
-        "https://neb-starter.vercel.app",
+        env.NEXT_PUBLIC_APP_URL,
         "android:apk-key-hash:BJcjfO2JQrG_98VLopoZHIUC7FPzLahmtT8tlaQNFKo",
       ],
     }),
@@ -161,7 +160,7 @@ const options = {
       ? { enabled: false }
       : {
           enabled: true,
-          domain: "neb-starter.vercel.app",
+          domain: "neb-starter-web.vercel.app",
         },
     useSecureCookies: !isDevEnvironment ? true : false,
     cookies: {
@@ -169,7 +168,7 @@ const options = {
         attributes: {
           secure: !isDevEnvironment ? true : false,
           sameSite: "lax",
-          ...(isDevEnvironment ? {} : { domain: ".neb-starter.vercel.app" }),
+          ...(isDevEnvironment ? {} : { domain: ".neb-starter-web.vercel.app" }),
         },
       },
     },

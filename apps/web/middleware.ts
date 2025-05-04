@@ -1,18 +1,15 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { env } from "./lib/env";
 
 // Define allowed origins for your Expo app and web app
 const allowedOrigins = [
   // Web app origins
-  "https://neb-starter.vercel.app",
-  "https://neb-starter.vercel.app/api/auth",
+  env.NEXT_PUBLIC_APP_URL,
+  `${env.NEXT_PUBLIC_APP_URL}/api/auth`,
   // Expo app schemes and origins
   "mobile://",
   "exp+mobile://",
   "exp+mobile://expo-development-client",
-  // Development origins - will be filtered out in production
-  process.env.NODE_ENV === "development" && "http://localhost:3000",
-  process.env.NODE_ENV === "development" && "http://192.168.1.84:3000",
-  process.env.NODE_ENV === "development" && "http://192.168.1.84:8081",
 ].filter(Boolean);
 
 // CORS headers to apply

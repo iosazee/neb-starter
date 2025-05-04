@@ -20,7 +20,7 @@ type ProfileResponse =
     }
   | ProfileData;
 
-const API_BASE = "https://neb-starter.vercel.app/api/mobile";
+const API_BASE = `${process.env.EXPO_PUBLIC_API_BASE_URL!}`;
 
 // --- Update user profile using $fetch
 const updateProfile = async (data: { firstName: string; lastName: string; email: string }) => {

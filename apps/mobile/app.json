@@ -14,7 +14,7 @@
       "buildNumber": "1.0.0",
       "usesAppleSignIn": true,
       "appleTeamId": "884D974W7T",
-      "associatedDomains": ["webcredentials:neb-starter.vercel.app"]
+      "associatedDomains": ["webcredentials:neb-starter-web.vercel.app"]
     },
     "android": {
       "edgeToEdgeEnabled": true,
