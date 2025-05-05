@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, ScrollView, TouchableOpacity, Pressable } from "react-native";
+import { View, ScrollView, TouchableOpacity, Pressable, InteractionManager } from "react-native";
 import { useTheme } from "@react-navigation/native";
 import { router } from "expo-router";
 import { BarChart, Settings, User, Calendar, CreditCard, Users, LogOut } from "lucide-react-native";
@@ -39,9 +39,20 @@ export default function DashboardScreen() {
     return `${user.firstName?.[0] || ""}${user.lastName?.[0] || ""}`.toUpperCase();
   };
 
-  const handleSignOut = async () => {
-    await signOut();
-    router.replace("/(auth)/login");
+  const handleSignOut = () => {
+    try {
+      router.replace("/(auth)/login");
+
+      InteractionManager.runAfterInteractions(async () => {
+        try {
+          await signOut();
+        } catch (error) {
+          console.error("Sign out error:", error);
+        }
+      });
+    } catch (error) {
+      console.error("Navigation error:", error);
+    }
   };
 
   return (

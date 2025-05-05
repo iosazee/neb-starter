@@ -40,7 +40,7 @@ function SuccessMessage({ message }: { message: string }) {
 // Main Login Screen Component
 export default function LoginScreen() {
   // Authentication state
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isPending } = useAuth();
   const [hasPasskey, setHasPasskey] = useState(false);
   const [passkeyAvailable, setPasskeyAvailable] = useState(false);
   const [isFirstTimeUser, setIsFirstTimeUser] = useState(false);
@@ -131,12 +131,29 @@ export default function LoginScreen() {
     checkPasskeyStatus();
   }, []);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (isAuthenticated && !isPending) {
+        router.replace("/(tabs)/dashboard");
+      }
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [isAuthenticated, isPending]);
+
   // Check if user is already authenticated
   useEffect(() => {
-    if (isAuthenticated) {
+    let isMounted = true;
+
+    // Only redirect if still mounted and authenticated
+    if (isMounted && isAuthenticated && !isPending) {
       router.replace("/dashboard");
     }
-  }, [isAuthenticated]);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [isAuthenticated, isPending]);
 
   // Event handlers
   const handleGoogleSuccess = () => setSuccess("Google sign-in successful!");

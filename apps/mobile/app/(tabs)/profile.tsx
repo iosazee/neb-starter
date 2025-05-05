@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, InteractionManager } from "react-native";
 import { Text } from "~/components/ui/text";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "~/components/ui/card";
@@ -41,9 +41,22 @@ export default function ProfileScreen() {
     return `${user.firstName?.[0] || ""}${user.lastName?.[0] || ""}`.toUpperCase();
   };
 
-  const handleSignOut = async () => {
-    await signOut();
-    router.replace("/(auth)/login");
+  const handleSignOut = () => {
+    try {
+      // Start navigation first
+      router.replace("/(auth)/login");
+
+      // Schedule sign-out to happen after navigation animations complete
+      InteractionManager.runAfterInteractions(async () => {
+        try {
+          await signOut();
+        } catch (error) {
+          console.error("Sign out error:", error);
+        }
+      });
+    } catch (error) {
+      console.error("Navigation error:", error);
+    }
   };
 
   return (
