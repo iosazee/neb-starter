@@ -75,7 +75,7 @@ export function AppleSignInButton({ onSuccess, onError }: AppleSignInButtonProps
         return;
       }
 
-      console.error("Apple Sign In Error:", error);
+      // console.info("Apple Sign In Error:", error);
 
       Alert.alert("Apple sign-in failed", error.message);
 

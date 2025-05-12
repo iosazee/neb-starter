@@ -50,3 +50,9 @@ export const fetchProfile = async () => {
     throw new Error(error?.message || "Failed to load profile");
   }
 };
+
+export const maskEmail = (email: string) => {
+  const [user, domain] = email.split("@");
+  const maskedUser = user[0] + "***" + user.slice(-1);
+  return `${maskedUser}@${domain}`;
+};
