@@ -2874,7 +2874,7 @@
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.11.0.tgz#75dce8e972f90bba488e2b0cc677fb233aa357ab"
   integrity sha512-zxnHvoMQVqewTJr/W4pKjF0bMGiKJv1WX7bSrkl46Hg0QjESbzBROWK0Wg4RphzSOS5Jiy7eFimmM3UgMrMZbQ==
 
-"@simplewebauthn/browser@^13.0.0":
+"@simplewebauthn/browser@^13.0.0", "@simplewebauthn/browser@^13.1.0":
   version "13.1.0"
   resolved "https://registry.yarnpkg.com/@simplewebauthn/browser/-/browser-13.1.0.tgz#48b0618fe703894add31dcb4755beddcc0798ab0"
   integrity sha512-WuHZ/PYvyPJ9nxSzgHtOEjogBhwJfC8xzYkPC+rR/+8chl/ft4ngjiK8kSU5HtRJfczupyOh33b25TjYbvwAcg==
@@ -5728,10 +5728,10 @@ expo-navigation-bar@~4.2.4:
     react-native-edge-to-edge "1.6.0"
     react-native-is-edge-to-edge "^1.1.6"
 
-expo-passkey@^0.1.0-rc.2:
-  version "0.1.0-rc.2"
-  resolved "https://registry.yarnpkg.com/expo-passkey/-/expo-passkey-0.1.0-rc.2.tgz#4d8d6d64bb8ab17059bd6837e78085d9a43644bb"
-  integrity sha512-XcVLXtOxmj747yGinV6GHye6SpwCacvSk5ayLt/VNZcG8EMEQLlVnDfKxQhYx1ioStJS1CkpymySrtmrfgIUww==
+expo-passkey@^0.2.0-beta.1:
+  version "0.2.0-beta.1"
+  resolved "https://registry.yarnpkg.com/expo-passkey/-/expo-passkey-0.2.0-beta.1.tgz#65f8ce7ff9bb1a7defc15d0a5f49e28033da2262"
+  integrity sha512-cMtF+nPnqXImsDvbqTdPBpBf3edGIpafksnTs6VeyRRZYwJ931/fGW3xaenCh2t3v+2uqnqnzvb6VINU7X8iuQ==
 
 expo-router@~5.0.4:
   version "5.0.4"
