@@ -5728,10 +5728,10 @@ expo-navigation-bar@~4.2.4:
     react-native-edge-to-edge "1.6.0"
     react-native-is-edge-to-edge "^1.1.6"
 
-expo-passkey@^0.2.0-beta.1:
-  version "0.2.0-beta.1"
-  resolved "https://registry.yarnpkg.com/expo-passkey/-/expo-passkey-0.2.0-beta.1.tgz#65f8ce7ff9bb1a7defc15d0a5f49e28033da2262"
-  integrity sha512-cMtF+nPnqXImsDvbqTdPBpBf3edGIpafksnTs6VeyRRZYwJ931/fGW3xaenCh2t3v+2uqnqnzvb6VINU7X8iuQ==
+expo-passkey@^0.2.0-beta.4:
+  version "0.2.0-beta.4"
+  resolved "https://registry.yarnpkg.com/expo-passkey/-/expo-passkey-0.2.0-beta.4.tgz#e7f944a616bf16989cc302a58b0666b61bb2650b"
+  integrity sha512-njYb87w+UIKDHqqGINpmtx145y4tqTFCcOtF/NG6hFbaEPgi+eJNLwpFhozUbQaCzVKmpxW1sSxm//p7lkkwWA==
 
 expo-router@~5.0.4:
   version "5.0.4"

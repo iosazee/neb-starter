@@ -5,6 +5,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useRouter } from "next/navigation";
 import { GoogleLoginButton } from "@/components/auth/google-login-button";
 import { GithubLoginButton } from "@/components/auth/github-login-button";
+import { PasskeyLoginButton } from "@/components/auth/passkey-login-button";
 
 export default function LoginForm({ callbackUrl = "/dashboard" }) {
   const [errorMessage, setErrorMessage] = useState("");
@@ -31,6 +32,19 @@ export default function LoginForm({ callbackUrl = "/dashboard" }) {
 
       {/* Social Login Buttons */}
       <div className="space-y-3">
+        {/* Passkey Login Button - Priority placement at top */}
+        <PasskeyLoginButton onSuccess={handleAuthSuccess} onError={handleAuthError} />
+
+        {/* Divider between passkey and social logins */}
+        <div className="relative my-2">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t border-gray-300 dark:border-gray-600"></span>
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="px-2 bg-white dark:bg-slate-900 text-gray-500">OR</span>
+          </div>
+        </div>
+
         {/* Google Login Button */}
         <GoogleLoginButton onSuccess={handleAuthSuccess} onError={handleAuthError} />
 
