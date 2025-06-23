@@ -1,20 +1,22 @@
 import { createAuthClient } from "better-auth/react";
 import {
-  passkeyClient,
   adminClient,
   customSessionClient,
   inferAdditionalFields,
 } from "better-auth/client/plugins";
 import { auth } from "@/lib/auth";
 import { toast } from "sonner";
+import { expoPasskeyClient } from "expo-passkey/web";
 
 export const client = createAuthClient({
   baseURL: process.env.NEXT_PUBLIC_APP_URL,
   plugins: [
-    passkeyClient(),
     adminClient(),
     customSessionClient<typeof auth>(),
     inferAdditionalFields<typeof auth>(),
+    expoPasskeyClient({
+      storagePrefix: "neb-starter",
+    }),
   ],
   fetchOptions: {
     onError(e) {
@@ -29,7 +31,17 @@ export const client = createAuthClient({
   },
 });
 
-export const { signIn, signOut, useSession, passkey } = client;
+export const {
+  signIn,
+  signOut,
+  useSession,
+  registerPasskey,
+  authenticateWithPasskey,
+  isPlatformAuthenticatorAvailable,
+  isPasskeySupported,
+  listPasskeys,
+  revokePasskey,
+} = client;
 
 // Export fetch client for authenticated requests
 export const $fetch = client.$fetch;

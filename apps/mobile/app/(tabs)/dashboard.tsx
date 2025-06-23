@@ -10,6 +10,7 @@ import { Alert, AlertTitle, AlertDescription } from "~/components/ui/alert";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "~/components/ui/tabs";
 import { useAuth, signOut } from "~/lib/auth-client";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import { maskEmail } from "~/lib/utils";
 
 export default function DashboardScreen() {
   const { colors } = useTheme();
@@ -191,7 +192,7 @@ export default function DashboardScreen() {
                   </View>
                   <View className="flex-row justify-between items-center">
                     <Text className="font-medium">Email:</Text>
-                    <Text>{user.email}</Text>
+                    <Text>{maskEmail(user.email)}</Text>
                   </View>
                   <View className="flex-row justify-between items-center">
                     <Text className="font-medium">Role:</Text>

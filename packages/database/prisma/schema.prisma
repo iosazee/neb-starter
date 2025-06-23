@@ -26,7 +26,7 @@ model User {
   updatedAt      DateTime        @updatedAt
   accounts       Account[]
   sessions       Session[]
-  mobilepasskeys MobilePasskey[]
+  authpasskeys AuthPasskey[]
 
   @@map("user")
 }
@@ -79,7 +79,7 @@ model Verification {
 }
 
 
-model MobilePasskey {
+model AuthPasskey {
   id            String  @id @default(cuid())
   userId        String
   user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -97,7 +97,7 @@ model MobilePasskey {
   aaguid        String?
 
   @@unique([credentialId])
-  @@map("mobilePasskey")
+  @@map("authPasskey")
 }
 
 model PasskeyChallenge {
@@ -107,6 +107,8 @@ model PasskeyChallenge {
   type      String
   createdAt String
   expiresAt String
+  registrationOptions String?
+ 
 
   @@map("passkeyChallenge")
 }

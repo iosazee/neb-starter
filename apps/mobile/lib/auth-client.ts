@@ -4,8 +4,8 @@ import * as SecureStore from "expo-secure-store";
 import { inferAdditionalFields } from "better-auth/client/plugins";
 import { router } from "expo-router";
 import { z } from "zod";
-import { expoPasskeyClient } from "expo-passkey";
 import { googlePolyAuthClient } from "google-polyauth/client";
+import { expoPasskeyClient } from "expo-passkey/native";
 
 const baseURL = process.env.EXPO_PUBLIC_AUTH_BASE_URL!;
 
@@ -16,9 +16,6 @@ export const authClient = createAuthClient({
       scheme: "mobile",
       storagePrefix: "neb_starter",
       storage: SecureStore,
-    }),
-    expoPasskeyClient({
-      storagePrefix: "neb_starter",
     }),
     googlePolyAuthClient(),
     inferAdditionalFields({
@@ -42,6 +39,9 @@ export const authClient = createAuthClient({
           required: true,
         },
       },
+    }),
+    expoPasskeyClient({
+      storagePrefix: "neb_starter",
     }),
   ],
   fetchOptions: {

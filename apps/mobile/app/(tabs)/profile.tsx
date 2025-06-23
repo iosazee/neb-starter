@@ -13,6 +13,7 @@ import { router } from "expo-router";
 import Animated, { FadeIn } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "@react-navigation/native";
+import { maskEmail } from "~/lib/utils";
 
 export default function ProfileScreen() {
   const { colors } = useTheme();
@@ -74,7 +75,7 @@ export default function ProfileScreen() {
             <Text className="text-2xl font-bold mb-1">
               {user.firstName} {user.lastName}
             </Text>
-            <Text className="text-muted-foreground mb-2">{user.email}</Text>
+            <Text className="text-muted-foreground mb-2">{maskEmail(user.email)}</Text>
             <Badge variant="outline">
               <Text>Role: {user.role || "user"}</Text>
             </Badge>
@@ -122,7 +123,7 @@ export default function ProfileScreen() {
                   <View className="p-4 border-b border-border flex-row items-center justify-between">
                     <View>
                       <Text className="text-sm text-muted-foreground">Email</Text>
-                      <Text className="font-medium">{user.email}</Text>
+                      <Text className="font-medium">{maskEmail(user.email)}</Text>
                     </View>
                     <Button variant="ghost" size="sm">
                       <Edit size={16} color={colors.primary} />
