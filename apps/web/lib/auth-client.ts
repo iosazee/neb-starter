@@ -39,6 +39,7 @@ export const {
   authenticateWithPasskey,
   isPlatformAuthenticatorAvailable,
   isPasskeySupported,
+  hasPasskeysRegistered,
   listPasskeys,
   revokePasskey,
 } = client;

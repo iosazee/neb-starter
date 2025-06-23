@@ -9,6 +9,7 @@ import { PasskeyLoginButton } from "@/components/auth/passkey-login-button";
 
 export default function LoginForm({ callbackUrl = "/dashboard" }) {
   const [errorMessage, setErrorMessage] = useState("");
+  const [isPasskeyVisible, setIsPasskeyVisible] = useState(false);
   const router = useRouter();
 
   // Handler for auth success
@@ -21,6 +22,11 @@ export default function LoginForm({ callbackUrl = "/dashboard" }) {
     setErrorMessage(`Authentication failed: ${error.message || "Unknown error"}`);
   };
 
+  // Handler for passkey visibility changes
+  const handlePasskeyVisibilityChange = (isVisible: boolean) => {
+    setIsPasskeyVisible(isVisible);
+  };
+
   return (
     <>
       {/* Error message */}
@@ -30,25 +36,31 @@ export default function LoginForm({ callbackUrl = "/dashboard" }) {
         </Alert>
       )}
 
-      {/* Social Login Buttons */}
+      {/* Login Buttons */}
       <div className="space-y-3">
-        {/* Passkey Login Button - Priority placement at top */}
-        <PasskeyLoginButton onSuccess={handleAuthSuccess} onError={handleAuthError} />
+        {/* Passkey Login Button - Shows first if available (preferred method) */}
+        <PasskeyLoginButton
+          onSuccess={handleAuthSuccess}
+          onError={handleAuthError}
+          onVisibilityChange={handlePasskeyVisibilityChange}
+        />
 
-        {/* Divider between passkey and social logins */}
-        <div className="relative my-2">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t border-gray-300 dark:border-gray-600"></span>
+        {/* Conditional divider after passkey button */}
+        {isPasskeyVisible && (
+          <div className="relative my-2">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t border-gray-300 dark:border-gray-600"></span>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white dark:bg-slate-900 text-gray-500">OR</span>
+            </div>
           </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white dark:bg-slate-900 text-gray-500">OR</span>
-          </div>
-        </div>
+        )}
 
         {/* Google Login Button */}
         <GoogleLoginButton onSuccess={handleAuthSuccess} onError={handleAuthError} />
 
-        {/* Divider between buttons */}
+        {/* Divider between Google and GitHub */}
         <div className="relative my-2">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t border-gray-300 dark:border-gray-600"></span>

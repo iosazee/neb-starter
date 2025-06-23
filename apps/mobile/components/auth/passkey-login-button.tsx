@@ -24,6 +24,7 @@ export function PasskeyLoginButton({
 
       const result = await authenticateWithPasskey({
         rpId: "neb-starter-web.vercel.app",
+        userVerification: "preferred",
       });
 
       if (result.error) {
