@@ -93,7 +93,7 @@ export const PasskeyRegistration = ({
         rpName: "NEB Starter",
         attestation: "none",
         authenticatorSelection: {
-          authenticatorAttachment: "platform",
+          authenticatorAttachment: "cross-platform",
           userVerification: "preferred",
           residentKey: "preferred",
         },
