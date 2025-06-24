@@ -38,6 +38,7 @@ import { PasskeyRegistration } from "@/components/auth/passkey-registration";
 import { setPasskeyRegistered, removePasskeyRegistered } from "@/lib/utils";
 import { listPasskeys, revokePasskey } from "@/lib/auth-client";
 import { formatDistanceToNow } from "date-fns";
+import { maskEmail } from "@/lib/utils";
 
 interface SettingsShellProps {
   user: SessionUser;
@@ -298,7 +299,7 @@ export function SettingsShell({ user }: SettingsShellProps) {
                     <h3 className="text-lg font-medium">
                       {user.firstName} {user.lastName}
                     </h3>
-                    <p className="text-muted-foreground break-all">{user.email}</p>
+                    <p className="text-muted-foreground break-all">{maskEmail(user.email)}</p>
                     <Badge variant="outline" className="mt-2">
                       {user.role || "user"}
                     </Badge>
@@ -324,7 +325,9 @@ export function SettingsShell({ user }: SettingsShellProps) {
                   </div>
                   <div>
                     <label className="text-sm font-medium">Email Address</label>
-                    <p className="text-sm text-muted-foreground mt-1 break-all">{user.email}</p>
+                    <p className="text-sm text-muted-foreground mt-1 break-all">
+                      {maskEmail(user.email)}
+                    </p>
                   </div>
                   <div>
                     <label className="text-sm font-medium">Account Role</label>

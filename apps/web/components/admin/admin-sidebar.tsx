@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { LogOutButton } from "@/components/auth/logout-button";
 import { Sheet, SheetTrigger, SheetContent, SheetClose, SheetTitle } from "@/components/ui/sheet";
+import { maskEmail } from "@/lib/utils";
 
 interface AdminSidebarProps {
   user: {
@@ -89,7 +90,9 @@ export default function AdminSidebar({ user }: AdminSidebarProps) {
                 <p className="text-sm font-medium truncate">
                   {user.firstName} {user.lastName}
                 </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user.email}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                  {maskEmail(user.email)}
+                </p>
               </div>
               <div className="ml-auto">
                 <LogOutButton variant="ghost" size="icon" />
@@ -144,7 +147,7 @@ export default function AdminSidebar({ user }: AdminSidebarProps) {
                       {user.firstName} {user.lastName}
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                      {user.email}
+                      {maskEmail(user.email)}
                     </p>
                   </div>
                   <div>

@@ -179,3 +179,9 @@ export const addPasskeyRegistrationListener = (
   // Return cleanup function
   return () => window.removeEventListener("storage", handleStorageChange);
 };
+
+export const maskEmail = (email: string) => {
+  const [user, domain] = email.split("@");
+  const maskedUser = user[0] + "***" + user.slice(-1);
+  return `${maskedUser}@${domain}`;
+};

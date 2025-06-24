@@ -18,6 +18,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { LogOutButton } from "@/components/auth/logout-button";
 import { SessionUser } from "@/@types";
+import { maskEmail } from "@/lib/utils";
 
 interface DashboardShellProps {
   user: SessionUser;
@@ -84,7 +85,7 @@ export function DashboardShell({ user }: DashboardShellProps) {
                 <p className="text-sm font-medium truncate">
                   {user.firstName} {user.lastName}
                 </p>
-                <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                <p className="text-xs text-muted-foreground truncate">{maskEmail(user.email)}</p>
               </div>
               <LogOutButton variant="ghost" size="icon" />
             </div>
@@ -162,7 +163,7 @@ export function DashboardShell({ user }: DashboardShellProps) {
                   <p className="text-sm font-medium truncate">
                     {user.firstName} {user.lastName}
                   </p>
-                  <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                  <p className="text-xs text-muted-foreground truncate">{maskEmail(user.email)}</p>
                 </div>
                 <LogOutButton variant="ghost" size="icon" />
               </div>
@@ -205,7 +206,9 @@ export function DashboardShell({ user }: DashboardShellProps) {
                     <p className="text-sm font-medium leading-none">
                       {user.firstName} {user.lastName}
                     </p>
-                    <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      {maskEmail(user.email)}
+                    </p>
                     <p className="text-xs leading-none text-muted-foreground mt-1">
                       Role: {user.role || "user"}
                     </p>
@@ -257,7 +260,7 @@ export function DashboardShell({ user }: DashboardShellProps) {
                 </div>
                 <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
                   <span className="font-medium">Email:</span>
-                  <span>{user.email}</span>
+                  <span>{maskEmail(user.email)}</span>
                 </div>
                 <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
                   <span className="font-medium">Role:</span>
