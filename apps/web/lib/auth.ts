@@ -146,7 +146,7 @@ const options = {
       },
       origin: [
         env.NEXT_PUBLIC_APP_URL,
-        "android:apk-key-hash:BJcjfO2JQrG_98VLopoZHIUC7FPzLahmtT8tlaQNFKo",
+        "android:apk-key-hash:-sYXRdwJA3hvue3mKpYrOZ9zSPC7b4mbgzJmdZEDO5w",
       ],
     }),
     nextCookies(),
