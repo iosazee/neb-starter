@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Pressable, ActivityIndicator, Platform, Alert, Linking } from "react-native";
 import { Text } from "~/components/ui/text";
 import { registerPasskey, getBiometricInfo, isPasskeySupported } from "~/lib/auth-client";
+import { setPasskeyRegistered } from "~/lib/utils";
 import { cn } from "~/lib/cn";
 import * as Application from "expo-application";
 
@@ -143,13 +144,16 @@ export const PasskeyRegistration = ({
       }
 
       if (result.data?.success) {
+        // Set SecureStore flag to indicate user has registered a passkey
+        await setPasskeyRegistered();
+
         const authType =
           biometricInfo?.authenticationType ||
           (Platform.OS === "ios" ? "Face ID/Touch ID" : "Biometric authentication");
 
         Alert.alert(
           "Passkey Registered",
-          `${authType} passkey has been successfully registered for quick sign-in. You can now use it to sign in to your account.`,
+          `${authType} passkey has been successfully registered for quick sign-in. The passkey login option will now appear on the login screen for faster sign-in.`,
           [{ text: "OK", onPress: () => onComplete?.() }]
         );
       } else {

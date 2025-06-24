@@ -25,6 +25,7 @@ import {
   Mail,
 } from "lucide-react-native";
 import { revokePasskey, getStorageKeys } from "~/lib/auth-client";
+import { syncPasskeyRegistrationStatus } from "~/lib/utils";
 import { PasskeyRegistration } from "~/components/auth/passkey-registration";
 import { useColorScheme } from "~/lib/useColorScheme";
 import { formatDistanceToNow } from "date-fns";
@@ -80,9 +81,19 @@ export function Settings({ user }: SettingsProps) {
   // Gray/muted background color
   const mutedBgColor = colors.grey5 + "40";
 
-  const handlePasskeyRegistrationComplete = () => {
+  const updateSecureStoreFlag = async (passkeyList: ServerPasskey[]) => {
+    // Update SecureStore flag based on whether user has any active passkeys
+    const activePasskeys = passkeyList.filter((passkey) => passkey.status === "active");
+    await syncPasskeyRegistrationStatus(activePasskeys.length);
+
+    // console.info(
+    //   `Updated SecureStore passkey flag based on ${activePasskeys.length} active passkeys`
+    // );
+  };
+
+  const handlePasskeyRegistrationComplete = async () => {
     // Refetch passkeys and invalidate the query cache
-    refetch();
+    await refetch();
   };
 
   const handleRevokePasskey = useCallback(
@@ -144,6 +155,9 @@ export function Settings({ user }: SettingsProps) {
                   queryKey: ["passkeys", user.id],
                 });
 
+                // Refetch to get updated list and update SecureStore flag
+                await refetch();
+
                 RNAlert.alert("Success", "Passkey has been removed successfully");
               } catch (error) {
                 console.error("Error revoking passkey:", error);
@@ -156,8 +170,16 @@ export function Settings({ user }: SettingsProps) {
         ]
       );
     },
-    [user.id, currentCredentialId, setRevokingCredentialId]
+    [user.id, currentCredentialId, setRevokingCredentialId, refetch]
   );
+
+  // Update SecureStore flag whenever passkeys change
+  React.useEffect(() => {
+    if (passkeys.length >= 0) {
+      // Only run when we have actual data (even if empty)
+      updateSecureStoreFlag(passkeys);
+    }
+  }, [passkeys]);
 
   // Format the date with a better error-handling approach
   const formatLastUsed = (lastUsedStr: string | undefined): string => {

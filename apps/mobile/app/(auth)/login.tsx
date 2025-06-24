@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
+  Text,
   View,
   ScrollView,
   Platform,
@@ -9,10 +10,9 @@ import {
   StatusBar,
   TouchableOpacity,
   ActivityIndicator,
-  Text,
 } from "react-native";
-
-import { useAuth, getBiometricInfo, hasPasskeysRegistered } from "~/lib/auth-client";
+import { useAuth } from "~/lib/auth-client";
+import { hasPasskeyRegistered } from "~/lib/utils";
 import { router } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import { ChevronDown, ChevronUp } from "lucide-react-native";
@@ -40,7 +40,7 @@ function SuccessMessage({ message }: { message: string }) {
 // Main Login Screen Component
 export default function LoginScreen() {
   // Authentication state
-  const { isAuthenticated, isPending } = useAuth();
+  const { isAuthenticated } = useAuth();
   const [hasPasskey, setHasPasskey] = useState(false);
   const [passkeyAvailable, setPasskeyAvailable] = useState(false);
   const [isFirstTimeUser, setIsFirstTimeUser] = useState(false);
@@ -51,62 +51,32 @@ export default function LoginScreen() {
   const [success, setSuccess] = useState<string | null>(null);
   const [showAllOptions, setShowAllOptions] = useState(false);
 
-  // Perform the passkey check once on component mount
+  // Check passkey availability using SecureStore flag
   useEffect(() => {
     async function checkPasskeyStatus() {
       try {
-        // Step 1: Check if passkey is registered
-        const isPasskeyRegistered = await hasPasskeysRegistered();
+        setIsLoading(true);
 
-        // If no passkey is registered, we can return early
-        if (!isPasskeyRegistered) {
+        // Check SecureStore for passkey registration flag
+        const hasRegistered = await hasPasskeyRegistered();
+
+        if (hasRegistered) {
+          // If flag exists, assume passkey is available
+          setPasskeyAvailable(true);
+          setHasPasskey(true);
+        } else {
+          // No flag means no passkeys registered
           setPasskeyAvailable(false);
           setHasPasskey(false);
-          setIsLoading(false);
-
-          // Also check first time user status
-          checkFirstTimeStatus();
-          return;
         }
-
-        // Step 2: Check device capabilities if a passkey is registered
-        const biometricSupport = await getBiometricInfo();
-
-        // Check if biometrics are supported and enrolled
-        const isHardwareSupported = biometricSupport.isSupported;
-        const isEnrolled = biometricSupport.isEnrolled;
-
-        // Platform-specific checks
-        let isPlatformSupported = true;
-
-        if (Platform.OS === "ios") {
-          const version = parseInt(Platform.Version as string, 10);
-          isPlatformSupported = version >= 16;
-          // console.info("iOS version check:", version, isPlatformSupported);
-        }
-
-        if (Platform.OS === "android") {
-          const apiLevel = biometricSupport.platformDetails?.apiLevel;
-          isPlatformSupported = !!apiLevel && apiLevel >= 29;
-          // console.info("Android API level check:", apiLevel, isPlatformSupported);
-        }
-
-        // Passkey is only truly available if registered AND device supports it
-        const isAvailable = isHardwareSupported && isEnrolled && isPlatformSupported;
-        // console.info("Final passkey availability:", isAvailable);
-
-        setPasskeyAvailable(isAvailable);
-        setHasPasskey(isAvailable);
 
         // Also check first time user status
-        checkFirstTimeStatus();
+        await checkFirstTimeStatus();
       } catch (error) {
         console.error("Error checking passkey status:", error);
         setPasskeyAvailable(false);
         setHasPasskey(false);
-
-        // Also check first time user status even on error
-        checkFirstTimeStatus();
+        await checkFirstTimeStatus();
       } finally {
         setIsLoading(false);
       }
@@ -131,29 +101,12 @@ export default function LoginScreen() {
     checkPasskeyStatus();
   }, []);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (isAuthenticated && !isPending) {
-        router.replace("/(tabs)/dashboard");
-      }
-    }, 100);
-
-    return () => clearTimeout(timer);
-  }, [isAuthenticated, isPending]);
-
   // Check if user is already authenticated
   useEffect(() => {
-    let isMounted = true;
-
-    // Only redirect if still mounted and authenticated
-    if (isMounted && isAuthenticated && !isPending) {
+    if (isAuthenticated) {
       router.replace("/dashboard");
     }
-
-    return () => {
-      isMounted = false;
-    };
-  }, [isAuthenticated, isPending]);
+  }, [isAuthenticated]);
 
   // Event handlers
   const handleGoogleSuccess = () => setSuccess("Google sign-in successful!");
@@ -161,8 +114,16 @@ export default function LoginScreen() {
   const handleAppleSuccess = () => setSuccess("Apple sign-in successful!");
   const handleAppleError = (error: Error) => setError(error.message || "Apple sign-in failed");
   const handlePasskeySuccess = () => setSuccess("Passkey authentication successful!");
-  const handlePasskeyError = (error: Error) =>
+  const handlePasskeyError = (error: Error) => {
     setError(error.message || "Passkey authentication failed");
+  };
+
+  // Handle passkey visibility changes (when authentication fails and flag is removed)
+  const handlePasskeyVisibilityChange = (isVisible: boolean) => {
+    setHasPasskey(isVisible);
+    setPasskeyAvailable(isVisible);
+  };
+
   const toggleOptions = () => setShowAllOptions((prev) => !prev);
 
   // Render the primary authentication component based on passkey status
@@ -180,6 +141,7 @@ export default function LoginScreen() {
         <PasskeyLoginButton
           onSuccess={handlePasskeySuccess}
           onError={handlePasskeyError}
+          onVisibilityChange={handlePasskeyVisibilityChange}
           isAvailable={passkeyAvailable}
         />
       );
@@ -234,20 +196,22 @@ export default function LoginScreen() {
                   <View className="mb-4">
                     {renderPrimaryAuth()}
 
-                    {/* More options toggle */}
-                    <TouchableOpacity
-                      onPress={toggleOptions}
-                      className="flex-row items-center justify-center mt-3"
-                    >
-                      <Text className="text-purple-700 text-sm font-medium mr-1">
-                        {showAllOptions ? "Hide options" : "More sign in options"}
-                      </Text>
-                      {showAllOptions ? (
-                        <ChevronUp size={16} color="#6200ee" />
-                      ) : (
-                        <ChevronDown size={16} color="#6200ee" />
-                      )}
-                    </TouchableOpacity>
+                    {/* More options toggle - only show if primary auth is rendered */}
+                    {!isLoading && (
+                      <TouchableOpacity
+                        onPress={toggleOptions}
+                        className="flex-row items-center justify-center mt-3"
+                      >
+                        <Text className="text-purple-700 text-sm font-medium mr-1">
+                          {showAllOptions ? "Hide options" : "More sign in options"}
+                        </Text>
+                        {showAllOptions ? (
+                          <ChevronUp size={16} color="#6200ee" />
+                        ) : (
+                          <ChevronDown size={16} color="#6200ee" />
+                        )}
+                      </TouchableOpacity>
+                    )}
 
                     {/* Additional authentication options (collapsible) */}
                     {showAllOptions && (
@@ -290,10 +254,10 @@ export default function LoginScreen() {
                               <Text className="mx-2 text-gray-500">or</Text>
                               <View className="flex-1 h-px bg-gray-200" />
                             </View>
-                            {/* Pass passkey availability to avoid redundant checks */}
                             <PasskeyLoginButton
                               onSuccess={handlePasskeySuccess}
                               onError={handlePasskeyError}
+                              onVisibilityChange={handlePasskeyVisibilityChange}
                               isAvailable={passkeyAvailable}
                             />
                           </>

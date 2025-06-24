@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Pressable, View, Text, ActivityIndicator } from "react-native";
 import { authenticateWithPasskey } from "~/lib/auth-client";
+import { removePasskeyRegistered } from "~/lib/utils";
 import { router } from "expo-router";
 import { Key } from "lucide-react-native";
 
 interface PasskeyLoginButtonProps {
   onSuccess?: () => void;
   onError?: (error: Error) => void;
+  onVisibilityChange?: (isVisible: boolean) => void;
   // Simple prop to control visibility without internal checks
   isAvailable?: boolean;
 }
@@ -14,6 +16,7 @@ interface PasskeyLoginButtonProps {
 export function PasskeyLoginButton({
   onSuccess,
   onError,
+  onVisibilityChange,
   isAvailable = false,
 }: PasskeyLoginButtonProps) {
   const [loading, setLoading] = useState(false);
@@ -28,13 +31,22 @@ export function PasskeyLoginButton({
       });
 
       if (result.error) {
+        // If the error indicates no credentials, remove the SecureStore flag
+        if (
+          result.error.message.includes("no credentials") ||
+          result.error.message.includes("No passkey found") ||
+          result.error.message.includes("NotAllowedError")
+        ) {
+          await removePasskeyRegistered();
+          onVisibilityChange?.(false);
+        }
         throw result.error;
       }
 
       // Check if we have valid data with token and user
       if (result.data && result.data.token && result.data.user) {
         // Authentication successful
-        // console.info("Authentication successful for user:", result.data.user.id);
+        // console.info("Passkey authentication successful for user:", result.data.user.id);
 
         // Notify parent component of success
         if (onSuccess) {
@@ -51,8 +63,33 @@ export function PasskeyLoginButton({
       }
     } catch (error) {
       console.error("Passkey authentication error:", error);
-      if (onError && error instanceof Error) {
-        onError(error);
+
+      // Handle specific error types
+      let errorMessage = "Passkey authentication failed";
+
+      if (error instanceof Error) {
+        if (error.message.includes("User cancelled") || error.message.includes("AbortError")) {
+          // User cancelled - don't show error
+          return;
+        } else if (error.message.includes("NotAllowedError")) {
+          errorMessage = "Passkey authentication was blocked. Please try again.";
+        } else if (error.message.includes("NotSupportedError")) {
+          errorMessage = "Passkeys are not supported on this device.";
+        } else if (
+          error.message.includes("no credentials") ||
+          error.message.includes("No passkey found")
+        ) {
+          errorMessage = "No passkey found for this site. Please use another sign-in method.";
+          // Remove the flag since no passkeys are available
+          await removePasskeyRegistered();
+          onVisibilityChange?.(false);
+        } else {
+          errorMessage = error.message;
+        }
+      }
+
+      if (onError) {
+        onError(new Error(errorMessage));
       }
     } finally {
       setLoading(false);

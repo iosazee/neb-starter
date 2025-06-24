@@ -4,6 +4,12 @@ import { listPasskeys, getStorageKeys } from "~/lib/auth-client";
 import * as SecureStore from "expo-secure-store";
 import { useRefreshByUser } from "~/hooks/use-refresh-by-user";
 import { useRefreshOnFocus } from "~/hooks/use-refresh-on-focus";
+import {
+  hasPasskeyRegistered,
+  setPasskeyRegistered,
+  removePasskeyRegistered,
+  syncPasskeyRegistrationStatus,
+} from "~/lib/utils";
 
 interface ServerPasskey {
   id: string;
@@ -160,3 +166,79 @@ export function usePasskeys(userId: string): UsePasskeysResult {
     error: error instanceof Error ? error : null,
   };
 }
+
+/**
+ * React hook for managing passkey registration status in mobile components
+ * This provides a reactive way to track passkey registration status using SecureStore
+ */
+
+export const usePasskeyRegistrationStatus = () => {
+  const [hasRegistered, setHasRegistered] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  // Load initial state
+  useEffect(() => {
+    const loadInitialState = async () => {
+      try {
+        const registered = await hasPasskeyRegistered();
+        setHasRegistered(registered);
+      } catch (error) {
+        console.error("Failed to load passkey registration status:", error);
+        setHasRegistered(false);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadInitialState();
+  }, []);
+
+  const setRegistered = useCallback(async () => {
+    try {
+      await setPasskeyRegistered();
+      setHasRegistered(true);
+    } catch (error) {
+      console.error("Failed to set passkey registered:", error);
+    }
+  }, []);
+
+  const removeRegistered = useCallback(async () => {
+    try {
+      await removePasskeyRegistered();
+      setHasRegistered(false);
+    } catch (error) {
+      console.error("Failed to remove passkey registered:", error);
+    }
+  }, []);
+
+  const syncStatus = useCallback(async (passkeyCount: number) => {
+    try {
+      await syncPasskeyRegistrationStatus(passkeyCount);
+      const updated = await hasPasskeyRegistered();
+      setHasRegistered(updated);
+    } catch (error) {
+      console.error("Failed to sync passkey status:", error);
+    }
+  }, []);
+
+  const refreshStatus = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const registered = await hasPasskeyRegistered();
+      setHasRegistered(registered);
+    } catch (error) {
+      console.error("Failed to refresh passkey status:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  return {
+    hasRegistered,
+    isLoading,
+    setRegistered,
+    removeRegistered,
+    syncStatus,
+    refreshStatus,
+  };
+};
