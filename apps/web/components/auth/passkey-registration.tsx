@@ -10,6 +10,7 @@ import {
   isPasskeySupported,
   isPlatformAuthenticatorAvailable,
 } from "@/lib/auth-client";
+import { setPasskeyRegistered } from "@/lib/utils";
 import { Key, Shield, CheckCircle, AlertTriangle } from "lucide-react";
 
 interface PasskeyRegistrationProps {
@@ -109,6 +110,10 @@ export const PasskeyRegistration = ({
       if (result.data?.success) {
         setSuccess(true);
 
+        // Set localStorage flag to indicate user has registered a passkey
+        setPasskeyRegistered();
+        console.info("Passkey registration successful, localStorage flag set");
+
         // Show success message briefly before calling onComplete
         setTimeout(() => {
           onComplete?.();
@@ -185,8 +190,8 @@ export const PasskeyRegistration = ({
           <Alert>
             <CheckCircle className="h-4 w-4" />
             <AlertDescription>
-              Your passkey has been registered. You can now use it to sign in without entering your
-              password.
+              Your passkey has been registered. The passkey login option will now appear on the
+              login page for faster sign-in.
             </AlertDescription>
           </Alert>
         </CardContent>
@@ -241,7 +246,8 @@ export const PasskeyRegistration = ({
 
         <p className="text-xs text-muted-foreground text-center">
           This will prompt you to use your device's authentication method (fingerprint, face
-          recognition, or security key).
+          recognition, or security key). After registration, a passkey login option will appear on
+          the login page.
         </p>
       </CardContent>
     </Card>

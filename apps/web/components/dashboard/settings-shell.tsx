@@ -35,6 +35,7 @@ import {
 } from "lucide-react";
 import { SessionUser } from "@/@types";
 import { PasskeyRegistration } from "@/components/auth/passkey-registration";
+import { setPasskeyRegistered, removePasskeyRegistered } from "@/lib/utils";
 import { listPasskeys, revokePasskey } from "@/lib/auth-client";
 import { formatDistanceToNow } from "date-fns";
 
@@ -116,6 +117,19 @@ export function SettingsShell({ user }: SettingsShellProps) {
     });
   };
 
+  const updateLocalStorageFlag = (passkeyList: Passkey[]) => {
+    // Update localStorage flag based on whether user has any active passkeys
+    const hasActivePasskeys = passkeyList.some((passkey) => passkey.status === "active");
+
+    if (hasActivePasskeys) {
+      setPasskeyRegistered();
+    } else {
+      removePasskeyRegistered();
+    }
+
+    console.info(`Updated localStorage passkey flag: ${hasActivePasskeys ? "set" : "removed"}`);
+  };
+
   const fetchPasskeys = async () => {
     if (!user?.id) return;
 
@@ -132,8 +146,12 @@ export function SettingsShell({ user }: SettingsShellProps) {
         throw result.error;
       }
 
-      setPasskeys(result.data?.passkeys || []);
+      const passkeyList = result.data?.passkeys || [];
+      setPasskeys(passkeyList);
       setPasskeyDataLoaded(true);
+
+      // Update localStorage flag based on current passkeys
+      updateLocalStorageFlag(passkeyList);
     } catch (err) {
       console.error("Failed to fetch passkeys:", err);
       showErrorMessage(err instanceof Error ? err.message : "Failed to fetch passkeys");
@@ -162,7 +180,7 @@ export function SettingsShell({ user }: SettingsShellProps) {
             throw result.error;
           }
 
-          await fetchPasskeys();
+          await fetchPasskeys(); // This will also update the localStorage flag
           showSuccessMessage("Passkey has been removed successfully");
         } catch (err) {
           console.error("Failed to revoke passkey:", err);
@@ -177,7 +195,7 @@ export function SettingsShell({ user }: SettingsShellProps) {
 
   const handlePasskeyRegistrationComplete = () => {
     setShowPasskeyRegistration(false);
-    fetchPasskeys();
+    fetchPasskeys(); // This will also update the localStorage flag
     showSuccessMessage("Passkey has been registered successfully");
   };
 

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import LoadingSpinner from "@/components/loading-spinner";
 import { authenticateWithPasskey, isPasskeySupported } from "@/lib/auth-client";
+import { hasPasskeyRegistered, removePasskeyRegistered } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
 import { Key } from "lucide-react";
 
@@ -22,66 +23,48 @@ export const PasskeyLoginButton = ({
 }: PasskeyLoginButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSupported, setIsSupported] = useState<boolean | null>(null);
-  const [hasPasskey, setHasPasskey] = useState<boolean | null>(null);
+  const [hasRegisteredPasskey, setHasRegisteredPasskey] = useState<boolean>(false);
   const [isCheckingAvailability, setIsCheckingAvailability] = useState(true);
   const searchParams = useSearchParams();
 
-  // Check if passkeys are supported and registered
+  // Check if user has previously registered a passkey
   useEffect(() => {
-    const checkPasskeyAvailability = async () => {
+    const checkPasskeyRegistration = async () => {
       try {
         setIsCheckingAvailability(true);
 
-        // First check if passkeys are supported
+        // First check if passkeys are supported by the browser
         const supported = await isPasskeySupported();
         setIsSupported(supported);
 
         if (!supported) {
-          setHasPasskey(false);
+          setHasRegisteredPasskey(false);
           setIsCheckingAvailability(false);
           return;
         }
 
-        // For web on login page, check if platform authenticator is available
-        // If available, show the button optimistically - actual availability will be tested during auth
-        let hasRegisteredPasskey = false;
-
-        if (typeof window !== "undefined" && window.PublicKeyCredential) {
-          try {
-            // Check if platform authenticator is available
-            const platformAvailable =
-              await window.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
-
-            if (platformAvailable) {
-              // Show the button if platform authenticator exists
-              // The actual passkey availability will be discovered during authentication attempt
-              hasRegisteredPasskey = true;
-            }
-          } catch (error) {
-            console.debug("Could not check platform authenticator availability");
-          }
-        }
-
-        setHasPasskey(hasRegisteredPasskey);
+        // Check localStorage for registration flag
+        const hasRegistered = hasPasskeyRegistered();
+        setHasRegisteredPasskey(hasRegistered);
       } catch (error) {
-        console.error("Failed to check passkey availability:", error);
+        console.error("Failed to check passkey registration status:", error);
         setIsSupported(false);
-        setHasPasskey(false);
+        setHasRegisteredPasskey(false);
       } finally {
         setIsCheckingAvailability(false);
       }
     };
 
-    checkPasskeyAvailability();
+    checkPasskeyRegistration();
   }, []);
 
   // Notify parent about visibility changes
   useEffect(() => {
-    if (!isCheckingAvailability && isSupported !== null && hasPasskey !== null) {
-      const isVisible = isSupported && hasPasskey;
+    if (!isCheckingAvailability && isSupported !== null) {
+      const isVisible = isSupported && hasRegisteredPasskey;
       onVisibilityChange?.(isVisible);
     }
-  }, [isCheckingAvailability, isSupported, hasPasskey, onVisibilityChange]);
+  }, [isCheckingAvailability, isSupported, hasRegisteredPasskey, onVisibilityChange]);
 
   const handlePasskeyAuth = async () => {
     try {
@@ -107,13 +90,14 @@ export const PasskeyLoginButton = ({
       });
 
       if (result.error) {
-        // If the error is about no credentials, it means user doesn't have passkeys
-        // In this case, we should hide the button for future attempts
+        // If the error indicates no credentials, remove the localStorage flag
         if (
           result.error.message.includes("no credentials") ||
-          result.error.message.includes("No passkey found")
+          result.error.message.includes("No passkey found") ||
+          result.error.message.includes("NotAllowedError")
         ) {
-          setHasPasskey(false);
+          removePasskeyRegistered();
+          setHasRegisteredPasskey(false);
           onVisibilityChange?.(false);
         }
         throw result.error;
@@ -152,8 +136,9 @@ export const PasskeyLoginButton = ({
           error.message.includes("No passkey found")
         ) {
           errorMessage = "No passkey found for this site. Please use another sign-in method.";
-          // Hide the button since no passkeys are available
-          setHasPasskey(false);
+          // Remove the flag since no passkeys are available
+          removePasskeyRegistered();
+          setHasRegisteredPasskey(false);
           onVisibilityChange?.(false);
         } else {
           errorMessage = error.message;
@@ -167,12 +152,12 @@ export const PasskeyLoginButton = ({
   };
 
   // Don't render while checking availability
-  if (isCheckingAvailability || isSupported === null || hasPasskey === null) {
-    return null; // Return null instead of loading spinner to avoid layout shift
+  if (isCheckingAvailability || isSupported === null) {
+    return null; // Return null to avoid layout shift
   }
 
-  // Don't render if passkeys aren't supported or no passkey is available
-  if (!isSupported || !hasPasskey) {
+  // Don't render if passkeys aren't supported or user hasn't registered one
+  if (!isSupported || !hasRegisteredPasskey) {
     return null;
   }
 
