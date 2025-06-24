@@ -349,9 +349,6 @@ export default function PrivacyPolicyPage() {
             </p>
             <div className="bg-muted p-4 rounded-lg mt-4">
               <p>
-                <strong>Email:</strong> privacy@neb-starter.com
-              </p>
-              <p>
                 <strong>GitHub:</strong>{" "}
                 <a href="https://github.com/iosazee/neb-starter" className="text-primary underline">
                   https://github.com/iosazee/neb-starter

@@ -15,7 +15,7 @@ export default function TermsOfServicePage() {
           <h1 className="text-4xl font-bold mb-8">Terms of Service</h1>
 
           <p className="text-lg text-muted-foreground mb-8">
-            <strong>Last updated:</strong> December 24, 2024
+            <strong>Last updated:</strong> June 24, 2025
           </p>
 
           <section className="mb-8">
@@ -405,9 +405,6 @@ export default function TermsOfServicePage() {
             <h2 className="text-2xl font-semibold mb-4">14. Contact Information</h2>
             <p>If you have any questions about these Terms of Service, please contact us:</p>
             <div className="bg-muted p-4 rounded-lg mt-4">
-              <p>
-                <strong>Email:</strong> legal@neb-starter.com
-              </p>
               <p>
                 <strong>GitHub Issues:</strong>{" "}
                 <a
