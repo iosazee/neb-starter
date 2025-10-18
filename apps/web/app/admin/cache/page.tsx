@@ -19,7 +19,7 @@ export default async function CacheMonitorPage() {
       <div className="p-8 max-w-4xl mx-auto">
         <div className="bg-red-50 text-red-700 p-4 rounded-md">
           <h2 className="text-lg font-semibold">Access Denied</h2>
-          <p>You don't have permission to access this page.</p>
+          <p>You don&apos;t have permission to access this page.</p>
         </div>
       </div>
     );

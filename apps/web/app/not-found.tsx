@@ -11,7 +11,7 @@ export default function NotFound() {
       <div className="text-center space-y-6 max-w-xl">
         <h1 className="text-6xl font-bold tracking-tight text-foreground">404</h1>
         <p className="text-xl text-muted-foreground">
-          Oops! The page you're looking for doesn't exist.
+          Oops! The page you&apos;re looking for doesn&apos;t exist.
         </p>
         <Button size="lg" asChild>
           <Link href="/">Go back to home</Link>

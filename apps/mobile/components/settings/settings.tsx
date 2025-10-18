@@ -115,7 +115,6 @@ export function Settings({ user }: SettingsProps) {
 
                 // Use the package's revokePasskey function with updated parameters
                 const result = await revokePasskey({
-                  userId: user.id,
                   credentialId: credentialId,
                   reason: "user_requested",
                 });

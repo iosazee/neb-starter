@@ -172,7 +172,6 @@ export function SettingsShell({ user }: SettingsShellProps) {
           setRevoking(credentialId);
 
           const result = await revokePasskey({
-            userId: user.id,
             credentialId,
             reason: "user_requested",
           });
@@ -515,14 +514,14 @@ export function SettingsShell({ user }: SettingsShellProps) {
                 </CardHeader>
                 <CardContent className="space-y-2">
                   <p className="text-sm text-muted-foreground">
-                    Passkeys are a secure, passwordless way to sign in using your device's built-in
+                    Passkeys are a secure, passwordless way to sign in using your device&apos;s built-in
                     authentication methods like fingerprint, face recognition, or security keys.
                   </p>
                   <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
                     <li>More secure than passwords</li>
                     <li>Faster and more convenient sign-in</li>
-                    <li>Unique to each website - can't be reused by attackers</li>
-                    <li>Protected by your device's security</li>
+                    <li>Unique to each website - can&apos;t be reused by attackers</li>
+                    <li>Protected by your device&apos;s security</li>
                   </ul>
                 </CardContent>
               </Card>

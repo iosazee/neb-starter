@@ -11,31 +11,34 @@ const compat = new FlatCompat({
 
 const eslintConfig = [...compat.extends("next/core-web-vitals", "next/typescript")];
 
-export default async function config() {
-  const [{ default: tsParser }, { default: tsPlugin }] = await Promise.all([
-    import("@typescript-eslint/parser"),
-    import("@typescript-eslint/eslint-plugin"),
-  ]);
+const [{ default: tsParser }, { default: tsPlugin }] = await Promise.all([
+  import("@typescript-eslint/parser"),
+  import("@typescript-eslint/eslint-plugin"),
+]);
 
-  return [
-    ...eslintConfig,
-    {
-      plugins: {
-        "@typescript-eslint": tsPlugin,
-      },
-      languageOptions: {
-        parser: tsParser,
-      },
-      rules: {
-        "no-unused-vars": "off",
-        "@typescript-eslint/no-unused-vars": [
-          "error",
-          {
-            argsIgnorePattern: "^_",
-            varsIgnorePattern: "^_",
-          },
-        ],
-      },
+const config = [
+  {
+    ignores: [".next/**", "node_modules/**"],
+  },
+  ...eslintConfig,
+  {
+    plugins: {
+      "@typescript-eslint": tsPlugin,
     },
-  ];
-}
+    languageOptions: {
+      parser: tsParser,
+    },
+    rules: {
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+        },
+      ],
+    },
+  },
+];
+
+export default config;

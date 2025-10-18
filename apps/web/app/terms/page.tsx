@@ -21,9 +21,9 @@ export default function TermsOfServicePage() {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">1. Introduction</h2>
             <p>
-              Welcome to NEB Starter ("we," "our," or "us"). These Terms of Service ("Terms") govern
+              Welcome to NEB Starter (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;). These Terms of Service (&quot;Terms&quot;) govern
               your use of the NEB Starter demonstration application, including our website at
-              neb-starter.vercel.app and our mobile application (collectively, the "Service").
+              neb-starter.vercel.app and our mobile application (collectively, the &quot;Service&quot;).
             </p>
             <p>
               NEB Starter is an open-source starter kit and educational demonstration that showcases
@@ -77,7 +77,7 @@ export default function TermsOfServicePage() {
 
             <h3 className="text-xl font-semibold mb-3">2.3 No Commercial Guarantee</h3>
             <p>
-              While we strive to maintain the Service's availability and functionality, NEB Starter
+              While we strive to maintain the Service&apos;s availability and functionality, NEB Starter
               is provided as a demonstration and educational tool without commercial guarantees or
               service level agreements.
             </p>
@@ -129,7 +129,7 @@ export default function TermsOfServicePage() {
             <ul className="list-disc pl-6 mb-4">
               <li>Violate any applicable laws or regulations</li>
               <li>Transmit malicious code, viruses, or harmful software</li>
-              <li>Attempt to gain unauthorized access to other users' accounts or data</li>
+              <li>Attempt to gain unauthorized access to other users&apos; accounts or data</li>
               <li>
                 Reverse engineer, decompile, or disassemble the Service (except as permitted by law)
               </li>
@@ -179,7 +179,7 @@ export default function TermsOfServicePage() {
 
             <h3 className="text-xl font-semibold mb-3">5.4 Trademarks</h3>
             <p>
-              "NEB Starter" and related logos are trademarks. Third-party trademarks mentioned in
+              &quot;NEB Starter&quot; and related logos are trademarks. Third-party trademarks mentioned in
               the Service are the property of their respective owners.
             </p>
           </section>
@@ -191,7 +191,7 @@ export default function TermsOfServicePage() {
 
             <h3 className="text-xl font-semibold mb-3">6.1 Service Availability</h3>
             <p>
-              We strive to maintain the Service's availability but do not guarantee uninterrupted
+              We strive to maintain the Service&apos;s availability but do not guarantee uninterrupted
               access. The Service may be temporarily unavailable due to:
             </p>
             <ul className="list-disc pl-6 mb-4">
@@ -246,9 +246,9 @@ export default function TermsOfServicePage() {
               8. Disclaimers and Limitation of Liability
             </h2>
 
-            <h3 className="text-xl font-semibold mb-3">8.1 "As Is" Service</h3>
+            <h3 className="text-xl font-semibold mb-3">8.1 &quot;As Is&quot; Service</h3>
             <p>
-              THE SERVICE IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS. WE EXPRESSLY DISCLAIM
+              THE SERVICE IS PROVIDED ON AN &quot;AS IS&quot; AND &quot;AS AVAILABLE&quot; BASIS. WE EXPRESSLY DISCLAIM
               ALL WARRANTIES OF ANY KIND, WHETHER EXPRESS, IMPLIED, OR STATUTORY, INCLUDING BUT NOT
               LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE,
               AND NON-INFRINGEMENT.
@@ -282,7 +282,7 @@ export default function TermsOfServicePage() {
             <p>
               You agree to defend, indemnify, and hold us harmless from and against any and all
               claims, damages, obligations, losses, liabilities, costs, and expenses (including
-              attorney's fees) arising from:
+              attorney&apos;s fees) arising from:
             </p>
             <ul className="list-disc pl-6 mb-4">
               <li>Your use of the Service</li>
@@ -356,7 +356,7 @@ export default function TermsOfServicePage() {
             </p>
             <ul className="list-disc pl-6 mb-4">
               <li>Posting the updated Terms on this page</li>
-              <li>Updating the "Last updated" date</li>
+              <li>Updating the &quot;Last updated&quot; date</li>
               <li>Providing notice through the Service or via email (if applicable)</li>
               <li>Announcing changes in our GitHub repository</li>
             </ul>

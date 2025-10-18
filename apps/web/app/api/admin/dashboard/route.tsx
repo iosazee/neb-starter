@@ -6,8 +6,17 @@ import { CacheMetricsService } from "@/lib/cache-metrics";
 
 export const dynamic = "force-dynamic"; // Ensure fresh data on each request
 
+// Session data type for parsed session values
+interface SessionData {
+  session?: { userId?: string; createdAt?: string; userAgent?: string };
+  user?: { id?: string };
+  userId?: string;
+  id?: string;
+  userAgent?: string;
+}
+
 // Log wrapper that works in both development and production
-function logMessage(message: string, data?: any) {
+function logMessage(message: string, data?: unknown) {
   const logPrefix = "[ADMIN-DASHBOARD-API]";
   if (data) {
     console.log(`${logPrefix} ${message}`, data);
@@ -114,10 +123,10 @@ async function getSessions(now: Date) {
         }
 
         // For regular sessions, try to parse the JSON value
-        let sessionData: any;
+        let sessionData: SessionData;
         try {
           sessionData = JSON.parse(entry.value);
-        } catch (e) {
+        } catch {
           // If parsing fails, try to extract user ID from the key
           // This is a fallback for malformed data
           const userIdMatch =
@@ -142,7 +151,7 @@ async function getSessions(now: Date) {
           uniqueUserIds.add(userId);
 
           // Calculate age using session.createdAt if available, otherwise use entry.createdAt
-          const sessionCreatedAt = sessionData.session && new Date(sessionData.session.createdAt);
+          const sessionCreatedAt = sessionData.session?.createdAt ? new Date(sessionData.session.createdAt) : null;
           if (sessionCreatedAt && !isNaN(sessionCreatedAt.getTime())) {
             const ageHours = (now.getTime() - sessionCreatedAt.getTime()) / (1000 * 60 * 60);
             totalAgeHours += ageHours;
@@ -200,7 +209,7 @@ async function getSessions(now: Date) {
   }
 }
 
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     logMessage("Dashboard API request received");
 

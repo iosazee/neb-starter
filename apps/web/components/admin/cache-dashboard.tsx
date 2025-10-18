@@ -100,7 +100,7 @@ const useCacheMetrics = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchMetrics = async (forceRefresh = false): Promise<void> => {
+  const fetchMetrics = async (_forceRefresh = false): Promise<void> => {
     try {
       setIsLoading(true);
       setError(null);

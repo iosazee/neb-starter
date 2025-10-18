@@ -156,7 +156,7 @@ export const PasskeyRegistration = ({
             <span>Passkeys Not Supported</span>
           </CardTitle>
           <CardDescription>
-            Your browser doesn't support passkeys. Please use a modern browser like Chrome, Firefox,
+            Your browser doesn&apos;t support passkeys. Please use a modern browser like Chrome, Firefox,
             Safari, or Edge.
           </CardDescription>
         </CardHeader>
@@ -226,7 +226,7 @@ export const PasskeyRegistration = ({
           </div>
           <div className="flex items-center space-x-2 text-sm text-muted-foreground">
             <Key className="h-4 w-4" />
-            <span>Uses your device's built-in security</span>
+            <span>Uses your device&apos;s built-in security</span>
           </div>
         </div>
 
@@ -245,7 +245,7 @@ export const PasskeyRegistration = ({
         </Button>
 
         <p className="text-xs text-muted-foreground text-center">
-          This will prompt you to use your device's authentication method (fingerprint, face
+          This will prompt you to use your device&apos;s authentication method (fingerprint, face
           recognition, or security key). After registration, a passkey login option will appear on
           the login page.
         </p>

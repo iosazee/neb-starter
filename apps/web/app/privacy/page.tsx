@@ -21,7 +21,7 @@ export default function PrivacyPolicyPage() {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">1. Introduction</h2>
             <p>
-              Welcome to NEB Starter ("we," "our," or "us"). NEB Starter is an open-source starter
+              Welcome to NEB Starter (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;). NEB Starter is an open-source starter
               kit and demonstration application that showcases modern web and mobile development
               practices. This Privacy Policy explains how we collect, use, disclose, and safeguard
               your information when you visit our demonstration website at neb-starter.vercel.app
@@ -56,7 +56,7 @@ export default function PrivacyPolicyPage() {
             </ul>
             <p>
               We only request the minimum necessary permissions: <code>openid</code>,{" "}
-              <code>profile</code>, and <code>email</code> scopes from Google's OAuth API.
+              <code>profile</code>, and <code>email</code> scopes from Google&apos;s OAuth API.
             </p>
 
             <h3 className="text-xl font-semibold mb-3">2.2 Information from GitHub OAuth</h3>
@@ -81,7 +81,7 @@ export default function PrivacyPolicyPage() {
                 <strong>Name:</strong> If you choose to share it
               </li>
               <li>
-                <strong>Email address:</strong> Either your real email or Apple's private relay
+                <strong>Email address:</strong> Either your real email or Apple&apos;s private relay
                 email
               </li>
               <li>
@@ -109,7 +109,7 @@ export default function PrivacyPolicyPage() {
 
             <h3 className="text-xl font-semibold mb-3">2.6 Biometric Data (Mobile App)</h3>
             <p>
-              Our mobile app supports passkey authentication using your device's biometric features
+              Our mobile app supports passkey authentication using your device&apos;s biometric features
               (Face ID, Touch ID, fingerprint). This biometric data is processed and stored locally
               on your device only - we never have access to your actual biometric information.
             </p>
@@ -315,7 +315,7 @@ export default function PrivacyPolicyPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">10. Children's Privacy</h2>
+            <h2 className="text-2xl font-semibold mb-4">10. Children&apos;s Privacy</h2>
             <p>
               NEB Starter is not intended for use by children under 13 years of age. We do not
               knowingly collect personal information from children under 13. If we learn that we
@@ -336,8 +336,8 @@ export default function PrivacyPolicyPage() {
             <h2 className="text-2xl font-semibold mb-4">12. Changes to This Privacy Policy</h2>
             <p>
               We may update this Privacy Policy from time to time. We will notify you of any
-              material changes by posting the new Privacy Policy on this page and updating the "Last
-              updated" date. Changes become effective immediately upon posting.
+              material changes by posting the new Privacy Policy on this page and updating the &quot;Last
+              updated&quot; date. Changes become effective immediately upon posting.
             </p>
           </section>
 

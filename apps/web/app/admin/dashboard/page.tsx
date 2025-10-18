@@ -124,9 +124,11 @@ async function getSessions(now: Date) {
         }
 
         // For regular sessions, try to parse the JSON value
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let sessionData: any;
         try {
           sessionData = JSON.parse(entry.value);
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (e) {
           // If parsing fails, try to extract user ID from the key
           // This is a fallback for malformed data
@@ -222,7 +224,7 @@ export default async function AdminDashboardPage() {
       <div className="p-4 md:p-8 max-w-4xl mx-auto">
         <div className="bg-red-50 text-red-700 p-4 rounded-md">
           <h2 className="text-lg font-semibold">Access Denied</h2>
-          <p>You don't have permission to access this page.</p>
+          <p>You don&apos;t have permission to access this page.</p>
         </div>
       </div>
     );

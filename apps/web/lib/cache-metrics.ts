@@ -7,6 +7,15 @@
 import { db } from "database";
 import cache from "./cache-singleton";
 
+// Session data type for parsed session values
+interface SessionData {
+  session?: { userId?: string; createdAt?: string; userAgent?: string };
+  user?: { id?: string };
+  userId?: string;
+  id?: string;
+  userAgent?: string;
+}
+
 /**
  * Interface for cache memory metrics
  */
@@ -103,7 +112,7 @@ export class CacheMetricsService {
    * Get all cache health metrics
    */
   public static async getHealthMetrics(): Promise<CacheHealthMetrics> {
-    const startTime = Date.now();
+    const _startTime = Date.now();
 
     const [memoryMetrics, databaseMetrics, sessionMetrics] = await Promise.all([
       this.getMemoryMetrics(),
@@ -365,10 +374,10 @@ export class CacheMetricsService {
           }
 
           // For regular sessions, try to parse the JSON value
-          let sessionData: any;
+          let sessionData: SessionData;
           try {
             sessionData = JSON.parse(entry.value);
-          } catch (e) {
+          } catch {
             // If parsing fails, try to extract user ID from the key
             // This is a fallback for malformed data
             const userIdMatch =
@@ -396,7 +405,7 @@ export class CacheMetricsService {
             userSessionsMap[userId] = (userSessionsMap[userId] || 0) + 1;
 
             // Calculate age using session.createdAt if available, otherwise use entry.createdAt
-            const sessionCreatedAt = sessionData.session && new Date(sessionData.session.createdAt);
+            const sessionCreatedAt = sessionData.session?.createdAt ? new Date(sessionData.session.createdAt) : null;
             if (sessionCreatedAt && !isNaN(sessionCreatedAt.getTime())) {
               const ageHours = (now.getTime() - sessionCreatedAt.getTime()) / (1000 * 60 * 60);
               totalAgeHours += ageHours;
@@ -487,7 +496,7 @@ export class CacheMetricsService {
   public static async performMaintenance(
     options: MaintenanceOptions = {}
   ): Promise<MaintenanceResult> {
-    const startTime = Date.now();
+    const _startTime = Date.now();
     const actions: string[] = [];
     let entriesAffected = 0;
     let memoryFreed = 0;

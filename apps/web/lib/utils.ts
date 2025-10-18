@@ -5,7 +5,15 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function mapAppleProfileToUser(profile: any) {
+interface AppleProfile {
+  user?: { name?: { firstName?: string; lastName?: string } };
+  name?: string;
+  email?: string;
+  picture?: string;
+  email_verified?: boolean | "true";
+}
+
+export function mapAppleProfileToUser(profile: AppleProfile) {
   console.log("Apple Sign In Profile:", JSON.stringify(profile, null, 2));
 
   // If we get first and last name directly from Apple's user object
@@ -18,7 +26,7 @@ export function mapAppleProfileToUser(profile: any) {
       lastName,
       fullName: `${firstName} ${lastName}`,
       image: profile.picture,
-      emailVerified: profile.email_verified || true,
+      emailVerified: profile.email_verified === true || profile.email_verified === "true" ? true : undefined,
     };
   }
 
@@ -31,7 +39,7 @@ export function mapAppleProfileToUser(profile: any) {
       lastName: last || "User",
       fullName: profile.name,
       image: profile.picture,
-      emailVerified: profile.email_verified || true,
+      emailVerified: profile.email_verified === true || profile.email_verified === "true" ? true : undefined,
     };
   }
 
@@ -47,7 +55,7 @@ export function mapAppleProfileToUser(profile: any) {
       lastName: "User", // Default last name
       fullName: `${formattedUsername} User`,
       image: profile.picture,
-      emailVerified: profile.email_verified || true,
+      emailVerified: profile.email_verified === true || profile.email_verified === "true" ? true : undefined,
     };
   }
 
@@ -57,7 +65,7 @@ export function mapAppleProfileToUser(profile: any) {
     lastName: "User",
     fullName: "Apple User",
     image: profile.picture,
-    emailVerified: profile.email_verified || true,
+    emailVerified: profile.email_verified === true || profile.email_verified === "true" ? true : undefined,
   };
 }
 

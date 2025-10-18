@@ -11,6 +11,7 @@ yarn-error.log*
 # ides
 .idea
 .vs
+.serena
 
 # Build artifacts
 dist
